@@ -16,6 +16,7 @@ public:
     RedBlackTree& operator=(const RedBlackTree&) = delete;
 
     void insert(double key, int songId) override;
+    std::vector<int> search(double key) const;
     std::vector<int> rangeSearch(double lo, double hi) const override;
     int memoryBytes() const override;
     std::string name() const override;
@@ -43,4 +44,6 @@ private:
     void leftRotate(Node* x);
     void rightRotate(Node* x);
     void insertFixup(Node* node);
+    Node* lowerBound(double key) const;
+    Node* successor(Node* node) const;
 };

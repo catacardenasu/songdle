@@ -130,8 +130,53 @@ void RedBlackTree::insertFixup(Node* node) {
     root_->color = BLACK;
 }
 
-std::vector<int> RedBlackTree::rangeSearch(double, double) const {
+std::vector<int> RedBlackTree::search(double key) const {
+    Node* cur = root_;
+    while (cur) {
+        if (key == cur->key) return cur->ids;
+        if (key < cur->key) cur = cur->left;
+        else cur = cur->right;
+    }
     return {};
+}
+
+RedBlackTree::Node* RedBlackTree::lowerBound(double key) const {
+    Node* cur = root_;
+    Node* best = nullptr;
+    while (cur) {
+        if (cur->key >= key) {
+            best = cur;
+            cur = cur->left;
+        } else {
+            cur = cur->right;
+        }
+    }
+    return best;
+}
+
+RedBlackTree::Node* RedBlackTree::successor(Node* node) const {
+    if (node->right) {
+        node = node->right;
+        while (node->left) node = node->left;
+        return node;
+    }
+    Node* parent = node->parent;
+    while (parent && node == parent->right) {
+        node = parent;
+        parent = parent->parent;
+    }
+    return parent;
+}
+
+std::vector<int> RedBlackTree::rangeSearch(double lo, double hi) const {
+    std::vector<int> ids;
+    if (lo > hi) return ids;
+    Node* node = lowerBound(lo);
+    while (node && node->key <= hi) {
+        ids.insert(ids.end(), node->ids.begin(), node->ids.end());
+        node = successor(node);
+    }
+    return ids;
 }
 
 int RedBlackTree::memoryBytes() const {
