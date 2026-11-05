@@ -21,9 +21,12 @@ public:
     std::string name() const override;
 
 private:
+    enum Color { RED, BLACK };
+
     struct Node {
         double key;
         std::vector<int> ids;
+        Color color;
         Node* left;
         Node* right;
         Node* parent;
@@ -37,4 +40,7 @@ private:
 
     void destroy(Node* node);
     static bool hasId(const Node* node, int songId);
+    void leftRotate(Node* x);
+    void rightRotate(Node* x);
+    void insertFixup(Node* node);
 };
