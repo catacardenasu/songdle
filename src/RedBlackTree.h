@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-// One node per distinct key. Songs that share a year, tempo, or popularity
-// store their ids together on that node.
 class RedBlackTree : public TreeBase {
 public:
     RedBlackTree();
@@ -21,8 +19,6 @@ public:
     int memoryBytes() const override;
     std::string name() const override;
 
-    // Root is black, no red node has a red child, every path has the same
-    // number of black nodes, and keys stay in search order.
     bool invariantsHold() const;
 
 private:
@@ -36,9 +32,10 @@ private:
         Node* right;
         Node* parent;
 
-        Node(double k, int songId);
+        Node(double k);
     };
 
+    Node* NIL;
     Node* root_;
     int nodeCount_;
     int idBytes_;
@@ -47,7 +44,7 @@ private:
     static bool hasId(const Node* node, int songId);
     void leftRotate(Node* x);
     void rightRotate(Node* x);
-    void insertFixup(Node* node);
+    void fixInsert(Node* k);
     Node* lowerBound(double key) const;
     Node* successor(Node* node) const;
 };
