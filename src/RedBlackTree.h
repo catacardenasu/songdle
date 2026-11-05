@@ -21,6 +21,10 @@ public:
     int memoryBytes() const override;
     std::string name() const override;
 
+    // Root is black, no red node has a red child, every path has the same
+    // number of black nodes, and keys stay in search order.
+    bool invariantsHold() const;
+
 private:
     enum Color { RED, BLACK };
 

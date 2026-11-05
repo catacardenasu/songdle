@@ -7,5 +7,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-include_directories(include)
+include_directories(include src)
 add_executable(songdle src/main.cpp)
+add_executable(test_redblack tests/test_redblack.cpp src/RedBlackTree.cpp)

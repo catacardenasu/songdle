@@ -186,3 +186,33 @@ int RedBlackTree::memoryBytes() const {
 std::string RedBlackTree::name() const {
     return "Red-black tree";
 }
+
+bool RedBlackTree::invariantsHold() const {
+    struct Walk {
+        static int blackHeight(Node* node, bool& ok) {
+            if (!node) return 1;
+            if (node->color == RED) {
+                if ((node->left && node->left->color == RED) ||
+                    (node->right && node->right->color == RED)) {
+                    ok = false;
+                }
+            }
+            if (node->left) {
+                if (node->left->parent != node || !(node->left->key < node->key)) ok = false;
+            }
+            if (node->right) {
+                if (node->right->parent != node || !(node->right->key > node->key)) ok = false;
+            }
+            int left = blackHeight(node->left, ok);
+            int right = blackHeight(node->right, ok);
+            if (left != right) ok = false;
+            return left + (node->color == BLACK ? 1 : 0);
+        }
+    };
+
+    if (!root_) return true;
+    if (root_->parent != nullptr || root_->color != BLACK) return false;
+    bool ok = true;
+    Walk::blackHeight(root_, ok);
+    return ok;
+}
