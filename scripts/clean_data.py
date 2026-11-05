@@ -1,7 +1,8 @@
 import ast
+import csv
 import pandas as pd
 
-df = pd.read_csv("data/raw/tracks.csv")
+df = pd.read_csv("data/tracks.csv")
 start = len(df)
 
 # Drop songs with no name
@@ -25,7 +26,7 @@ for col in ["name", "artist"]:
 
 # Keep only the columns the C++ program needs
 out = df[["name", "artist", "year", "popularity", "tempo"]]
-out.to_csv("data/songs_clean.tsv", sep="\t", index=False, encoding="utf-8")
+out.to_csv("data/songs_clean.tsv", sep="\t", index=False, encoding="utf-8", quoting=csv.QUOTE_NONE)
 
 print("Rows before:", start)
 print("Rows after: ", len(out))

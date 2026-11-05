@@ -76,24 +76,19 @@ CategorySets buildCategorySet(const std::string& name, const std::vector<Song>& 
     return s;
 }
 
-struct Feedback {
+struct FilterTiming {
+    std::string structure;
+    int matches = 0;
+    double treeMicros = 0.0;  // time for the three range searches
+};
+
+struct GuessResult {
+    int songId = -1;
     bool correct = false;
     bool artistMatch = false;
     int year = 0;
     int tempo = 0;
     int popularity = 0;
-};
-
-struct FilterTiming {
-    std::string structure;
-    int matches = 0;
-    double treeMicros = 0.0;   // just the three range searches in the tree
-    double totalMicros = 0.0;  // range searches + hash-set intersection + artist filter
-};
-
-struct GuessResult {
-    int songId = -1;
-    Feedback feedback;
     int matches = 0;                    // songs that still match the clue
     std::vector<FilterTiming> timings;  // one per structure
     bool structuresAgree = true;        // every structure returned the same ids
@@ -106,6 +101,43 @@ public:
     // Picks a random mystery song with popularity >= minPopularity
     // (play mode uses ~50 so the song is guessable; benchmark uses 0).
     void startRandom(std::mt19937& rng, int minPopularity = 0);
+    
+    GuessResult guess(int songId);
+    // searched titles, most popular first 
+    std::vector<int> findByTitle(const std::string& query, int limit = 10) const;
+
+    // Basic setters and getters for game state
+    void setVerify(bool on){ 
+        verify_ = on; 
+    }
+    bool hasGuessed(int songId) const { 
+        return guessed_.count(songId) > 0;
+    }
+    bool hasWon() const { 
+        return won_;
+    }
+    bool isOver() const { 
+        return (won_ || guessesUsed() >= maxGuesses_);
+    }
+    int guessesUsed() const { 
+        return (history_.size());
+    }
+    int maxGuesses() const {
+        return maxGuesses_;
+    }
+    int mysteryId() const {
+        return mystery_;
+    }
+    const Song& song(int id) const {
+        return songs_[id];
+    }
+    const std::vector<GuessResult>& history() const {
+        return history_;
+    }
+    // Songs that still match the clues (empty before the first guess)
+    const std::vector<int>& candidates() const { 
+        return candidates_;
+    }
 private:
     struct Range {
         double lo = std::numeric_limits<double>::lowest();
