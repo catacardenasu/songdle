@@ -17,8 +17,8 @@
 class TreeBase {
 public:
     virtual ~TreeBase() = default;
-    virtual void insert(double key, int songId);
-    virtual std::vector<int> rangeSearch(double lo, double hi) const;
-    virtual int memoryBytes() const;
-    virtual std::string name() const;
+    virtual void insert(double key, int songId) = 0;
+    virtual std::vector<int> rangeSearch(double lo, double hi) const = 0;
+    virtual int memoryBytes() const = 0;
+    virtual std::string name() const = 0;
 };
