@@ -1,12 +1,5 @@
-//
-// Created by catac_07fjpav on 11/4/2026.
-//
-
-#ifndef SONGDLE_GAMEUI_H
-#define SONGDLE_GAMEUI_H
-
-#endif //SONGDLE_GAMEUI_H
 #pragma once
+
 #include "Benchmark.h"
 #include "Game.h"
 
