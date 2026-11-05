@@ -14,6 +14,7 @@ BenchmarkReport Benchmark::run(const std::vector<Song>& songs, const std::vector
         StructureStats st;
         st.name = s.name;
         st.buildMillis = s.buildTime;
+        st.memoryBytes = s.memoryBytes();
         report.structures.push_back(st);
     }
 

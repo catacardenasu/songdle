@@ -15,7 +15,7 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-    const std::string path = argc > 1 ? argv[1] : "data/tracks.csv";
+    const std::string path = argc > 1 ? argv[1] : "data/songs_clean.tsv";;
 
     std::cout << "Loading " << path << "...\n";
     LoadStats stats;
