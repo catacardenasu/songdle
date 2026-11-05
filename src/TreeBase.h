@@ -12,13 +12,16 @@
 //    every entry with lo <= key <= hi, in any order, each id exactly once.
 //  * If lo > hi, return an empty vector.
 //  * memoryBytes() estimates the bytes the structure uses
+//  * lo can be std::numeric_limits<double>::lowest() and hi can be max() when a
+//    clue hasn't narrowed that value yet. Never loop from lo to hi directly:
+//    clamp to the smallest/largest key you actually stored.
 //    (e.g. nodeCount * sizeof(Node) + any vectors' capacity).
 // ---------------------------------------------------------------------------
 class TreeBase {
 public:
     virtual ~TreeBase() = default;
-    virtual void insert(double key, int songId);
-    virtual std::vector<int> rangeSearch(double lo, double hi) const;
-    virtual int memoryBytes() const;
-    virtual std::string name() const;
+    virtual void insert(double key, int songId) = 0;
+    virtual std::vector<int> rangeSearch(double lo, double hi) const = 0;
+    virtual int memoryBytes() const = 0;
+    virtual std::string name() const = 0;
 };
